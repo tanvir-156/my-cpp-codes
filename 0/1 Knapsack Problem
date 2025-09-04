@@ -1,0 +1,54 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int t, i, j;
+    cin >> t;
+
+    while (t--) {
+        int n;
+        cin >> n;
+
+        int v[n + 1], w[n + 1];
+        for (i = 1; i <= n; i++) {
+            cin >> v[i] >> w[i];
+        }
+
+        int g;
+        cin >> g;
+        int mw[g], cap = 0;
+
+        for (i = 0; i < g; i++) {
+            cin >> mw[i];
+            if (mw[i] > cap)
+                cap = mw[i];
+        }
+
+        int dp[n + 1][cap + 1];
+
+        for (i = 0; i <= n; i++)
+            dp[i][0] = 0;
+        for (i = 0; i <= cap; i++)
+            dp[0][i] = 0;
+
+        for (i = 1; i <= n; i++) {
+            for (j = 1; j <= cap; j++) {
+                if (w[i] <= j)
+                    dp[i][j] = max(v[i] + dp[i - 1][j - w[i]], dp[i - 1][j]);
+                else
+                    dp[i][j] = dp[i - 1][j];
+            }
+        }
+
+        int total = 0;
+        for (i = 0; i < g; i++) {
+            total += dp[n][mw[i]];
+        }
+
+        cout << total << "\n";
+    }
+
+    return 0;
+} 
+
+
